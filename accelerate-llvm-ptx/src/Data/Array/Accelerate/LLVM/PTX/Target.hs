@@ -136,8 +136,10 @@ withPTXTargetMachine
     -> IO a
 withPTXTargetMachine dev go =
   let CUDA.Compute m n = CUDA.computeCapability dev
-      isa              = CPUFeature (ptxISAVersion m n)
-      sm               = fromString (printf "sm_%d%d" m n)
+      n' | m == 7      = 0
+         | otherwise   = n
+      isa              = CPUFeature (ptxISAVersion m n')
+      sm               = fromString (printf "sm_%d%d" m n')
   in
   withTargetOptions $ \options -> do
     withTargetMachine
@@ -171,8 +173,7 @@ ptxISAVersion 5 2 = "ptx41"
 ptxISAVersion 5 3 = "ptx42"
 ptxISAVersion 6 _ = "ptx50"
 ptxISAVersion 7 0 = "ptx60"
-ptxISAVersion 7 2 = "ptx61"   -- llvm-7
-ptxISAVersion 7 5 = "ptx63"   -- llvm-8
+ptxISAVersion 7 _ = error "default-sm_70: LLVM 6 only provides sm_70!"
 ptxISAVersion _ _ = "ptx40"
 
 
