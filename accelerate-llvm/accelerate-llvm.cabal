@@ -125,9 +125,6 @@ Library
     Data.ByteString.Short.Char8
     Data.ByteString.Short.Extra
 
-  other-modules:
-    Paths_accelerate_llvm
-
   build-depends:
           base                          >= 4.7 && < 4.13
         , accelerate                    == 1.3.*

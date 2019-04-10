@@ -110,8 +110,6 @@ Library
     Data.Array.Accelerate.LLVM.Native.Distribution.Simple.GHC
     Data.Array.Accelerate.LLVM.Native.Distribution.Simple.GHC.Internal
 
-    Paths_accelerate_llvm_native
-
   build-depends:
           base                          >= 4.7 && < 4.13
         , accelerate                    == 1.3.*
