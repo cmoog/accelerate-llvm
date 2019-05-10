@@ -123,8 +123,6 @@ Library
 
     System.Process.Extra
 
-    Paths_accelerate_llvm_ptx
-
   build-depends:
           base                          >= 4.7 && < 4.13
         , accelerate                    == 1.3.*

@@ -31,9 +31,6 @@ import System.Directory
 import System.FilePath
 import Text.Printf
 
-import Paths_accelerate_llvm
-
-
 -- TODO:
 --  * Remove old files which have not been accessed in some time
 --  * Reuse old cache files when upgrading to new versions (ala stack)
@@ -82,7 +79,7 @@ cacheOfUID uid = do
       (base, file)  = splitFileName template
       (name, ext)   = splitExtensions file
       --
-      cachepath     = appdir </> "accelerate-llvm-" ++ showVersion version </> base </> if dbg then "dbg" else "rel"
+      cachepath     = appdir </> "accelerate-llvm-" ++ "1.3.0.0" </> base </> if dbg then "dbg" else "rel"
       cachefile     = cachepath </> printf "%s%s" name (show uid) <.> ext
   --
   liftIO $ createDirectoryIfMissing True cachepath
@@ -98,7 +95,7 @@ removeCacheDirectory = do
   template  <- targetCacheTemplate
   let
       (base, _)     = splitFileName template
-      cachepath     = appdir </> "accelerate-llvm-" ++ showVersion version </> base
+      cachepath     = appdir </> "accelerate-llvm-" ++ "1.3.0.0" </> base
   --
   liftIO $ removeDirectoryRecursive cachepath
 

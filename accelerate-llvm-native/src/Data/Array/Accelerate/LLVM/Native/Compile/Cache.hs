@@ -24,12 +24,9 @@ import System.FilePath
 import qualified Data.ByteString.Char8                              as B8
 import qualified Data.ByteString.Short.Char8                        as S8
 
-import Paths_accelerate_llvm_native
-
-
 instance Persistent Native where
   targetCacheTemplate =
-    return $ "accelerate-llvm-native-" ++ showVersion version
+    return $ "accelerate-llvm-native-" ++ "1.3.0.0"
          </> "llvm-hs-" ++ VERSION_llvm_hs
          </> S8.unpack nativeTargetTriple
          </> B8.unpack nativeCPUName
