@@ -22,7 +22,6 @@ import Data.ByteString.Short                                        ( ShortByteS
 import Prelude                                                      as P hiding ( takeWhile )
 import qualified Data.ByteString.Internal                           as BI
 import qualified Data.ByteString.Short                              as BS
-import qualified Data.ByteString.Short.Extra                        as BS
 
 
 -- | /O(n)/ Convert a 'ShortByteString' into a list.

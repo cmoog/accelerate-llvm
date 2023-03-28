@@ -59,7 +59,6 @@ import Data.Maybe                                                   ( fromMaybe 
 import Formatting
 import Prelude                                                      hiding ( exp, map, sum, scanl, scanr )
 import qualified Data.ByteString.Short                              as S
-import qualified Data.ByteString.Short.Extra                        as S
 import qualified Data.DList                                         as DL
 
 

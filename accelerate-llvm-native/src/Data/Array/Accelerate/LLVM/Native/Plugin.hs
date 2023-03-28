@@ -29,7 +29,12 @@ import qualified Data.Map                                           as Map
 
 #if __GLASGOW_HASKELL__ >= 900
 import GHC.Plugins
+#if __GLASGOW_HASKELL__ >= 902
+import GHC.Driver.Backend
+import GHC.Linker.Loader
+#else
 import GHC.Runtime.Linker
+#endif
 #else
 import GhcPlugins
 import Linker
@@ -79,6 +84,25 @@ pass guts = do
     $ debugTraceMsg
     $ hang (text "Data.Array.Accelerate.LLVM.Native.Plugin: linking module" <+> quotes (pprModule this) <+> text "with:") 2 (vcat (map text paths))
 
+  -- This part of the GHC API changed substantially from 9.2.x onward.
+#if __GLASGOW_HASKELL__ >= 902
+  -- The linking method depends on the current build target
+  --
+  case backend dynFlags of
+    Interpreter ->
+      -- We are in interactive mode (ghci)
+      --
+      case hsc_interp hscEnv of
+        Nothing -> pure ()
+        Just interp ->
+          when (not (null paths)) . liftIO $ do
+            let opts  = ldInputs dynFlags
+                objs  = map optionOfPath paths
+            loadCmdLineLibs interp
+                   $ hscEnv { hsc_dflags = dynFlags { ldInputs = opts ++ objs }}
+    _ -> pure ()
+
+#else
   -- The linking method depends on the current build target
   --
   case hscTarget dynFlags of
@@ -134,8 +158,9 @@ pass guts = do
               AixLD     opts -> AixLD     (nub (opts ++ allObjs))
               LlvmLLD   opts -> LlvmLLD   (nub (opts ++ allObjs))
               UnknownLD      -> UnknownLD  -- no linking performed?
-#endif
       return ()
+#endif
+#endif
 
   return guts
 

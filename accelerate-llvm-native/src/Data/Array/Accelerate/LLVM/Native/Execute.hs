@@ -64,7 +64,6 @@ import Data.Foldable                                                ( asum )
 import Formatting
 import System.CPUTime                                               ( getCPUTime )
 import qualified Data.ByteString.Short                              as S
-import qualified Data.ByteString.Short.Extra                        as S
 import qualified Data.ByteString.Short.Char8                        as S8
 import qualified Data.Sequence                                      as Seq
 import qualified Data.DList                                         as DL

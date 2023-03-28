@@ -1,5 +1,6 @@
 {-# LANGUAGE BangPatterns          #-}
 {-# LANGUAGE ConstraintKinds       #-}
+{-# LANGUAGE CPP                   #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE GADTs                 #-}
@@ -31,9 +32,19 @@ import Data.Array.Accelerate.LLVM.Native.Target
 import qualified Data.DList                                     as DL
 import qualified Foreign.LibFFI                                 as FFI
 
+#include "MachDeps.h"
+
 instance Marshal Native where
   type ArgR Native = FFI.Arg
 
-  marshalInt = FFI.argInt
+#ifndef WORD_SIZE_IN_BITS
+#error No WORD_SIZE_IN_BITS
+#else
+#if WORD_SIZE_IN_BITS == 64
+  marshalInt = FFI.argInt64 . fromIntegral
+#else
+  marshalInt = FFI.argInt32 . fromIntegral
+#endif
+#endif
   marshalScalarData' _ = return . DL.singleton . FFI.argPtr . unsafeUniqueArrayPtr
 
